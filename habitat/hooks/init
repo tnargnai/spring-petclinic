@@ -1,0 +1,23 @@
+#!/bin/bash
+# Move directories that ship in the package into place
+cp -a $(hab pkg path core/tomcat8)/tc {{pkg.svc_var_path}}/
+
+# Symlink config files into $TOMCAT_HOME/conf
+for file in $(cd {{pkg.svc_config_path}}; ls -1)
+do
+  echo "Linking $file"
+  target="${file//_//}"
+  ln -vsf {{pkg.svc_config_path}}/$file {{pkg.svc_var_path}}/tc/$target
+done
+
+chown -R hab:hab {{pkg.svc_path}}/*
+
+echo "Done preparing TOMCAT_HOME"
+
+{{~#if bind.has_database}}
+echo "Creating 'petclinic' database on {{bind.database.me.ip}}"
+mysql -h {{bind.database.me.ip}} -u {{cfg.database.username}} -p{{cfg.database.password}} -e 'CREATE DATABASE IF NOT EXISTS petclinic;'
+{{~/if}}
+
+echo "Copying 'petclinic.war' to {{pkg.svc_var_path}}/tc/webapps"
+cp {{pkg.path}}/petclinic.war {{pkg.svc_var_path}}/tc/webapps
