@@ -1,11 +1,11 @@
 pkg_name=spring-petclinic
-pkg_origin=jtimberman
+pkg_origin=tnargnai
 pkg_version=4.2.6
 pkg_maintainer='The Habitat Maintainers <humans@habitat.sh>'
 pkg_license=('Apache-2.0')
 pkg_source=${pkg_name}-${pkg_version}.tar.bz2
 pkg_shasum="calculated"
-pkg_upstream_url=https://github.com/habitat-sh/spring-petclinic
+pkg_upstream_url=https://github.com/tnargnai/spring-petclinic
 pkg_description="A sample Spring-based application, customized by the Habitat maintainers for example purposes"
 
 pkg_expose=(8080)
